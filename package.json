@@ -4,9 +4,7 @@
   "description": "LANNISTER PAY (NodeJS Assessment)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server",
-    "build": "webpack -p"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Moses Oderinde",
   "license": "ISC",
