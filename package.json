@@ -4,7 +4,9 @@
   "description": "LANNISTER PAY (NodeJS Assessment)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server",
+    "build": "webpack -p"
   },
   "author": "Moses Oderinde",
   "license": "ISC",
@@ -12,6 +14,9 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "nodemon": "^2.0.15"
+  },
+  "config": {
+    "port": "8000"
   },
   "engines": {
     "node": "14.17.3"
