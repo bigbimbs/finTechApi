@@ -4,8 +4,8 @@
   "description": "LANNISTER PAY (NodeJS Assessment)",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "build": "ng build"
+    "start": "node index.js",
+    "build": "ng build --prod"
   },
   "author": "Moses Oderinde",
   "license": "ISC",
