@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "ng build --prod"
+    "build": "ng build"
   },
   "author": "Moses Oderinde",
   "license": "ISC",
@@ -13,9 +13,6 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "nodemon": "^2.0.15"
-  },
-  "config": {
-    "port": "8000"
   },
   "engines": {
     "node": "14.17.3"
