@@ -3,16 +3,11 @@
   "version": "1.0.0",
   "description": "LANNISTER PAY (NodeJS Assessment)",
   "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "build": "ng build"
-  },
   "author": "Moses Oderinde",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "nodemon": "^2.0.15"
+    "express": "^4.17.3"
   },
   "engines": {
     "node": "14.17.3"
