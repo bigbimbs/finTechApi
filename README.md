@@ -4,7 +4,7 @@
 ## run Node index to start the server
 
 ## Fee setup endpoint
-## HTTP POST /fees
+## HTTP POST /api/v1/fees
 ## Sample Post Data
 ### {
    "FeeConfigurationSpec": "LNPY1221 NGN * *(*) : APPLY PERC 1.4\nLNPY1222 NGN INTL CREDIT-CARD(VISA) : APPLY PERC 5.0\nLNPY1223 NGN LOCL CREDIT-CARD(*) : APPLY FLAT_PERC 50:1.4\nLNPY1224 NGN * BANK-ACCOUNT(*) : APPLY FLAT 100\nLNPY1225 NGN * USSD(MTN) : APPLY PERC 0.55"
@@ -17,7 +17,7 @@
 ### }
 
 ## Fee computation endpoint
-## HTTP POST /compute-transaction-fee
+## HTTP POST /api/v1/compute-transaction-fee
 
 ## Sample payload:
 ### {
@@ -52,6 +52,6 @@
     "SettlementAmount": 5000
 ### }
 
-## The api live base url https://bigbimbs-fintech-api-2022.herokuapp.com/
+## The api live base url https://bigbimbs-fintech-api-2022.herokuapp.com
 
 ##
