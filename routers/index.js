@@ -60,7 +60,7 @@ router.post("/compute-transaction-fee", (req, res) => {
       res.status(403);
       res.send({
         status: 403,
-        Error: "No fee configuration for USD transactions.",
+        Error: `No fee configuration for ${reqBody.Currency} transactions.`,
       });
       res.end();
     } else {
