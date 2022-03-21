@@ -7,7 +7,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3000;
 const router = require("./routers/index.js");
-app.use("/api/v1", router);
+app.use("/", router);
 router.get("*", (req, res) => {
   res.send("URL Resource not found");
 });
