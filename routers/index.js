@@ -108,89 +108,100 @@ router.post("/compute-transaction-fee", (req, res) => {
                 // parse JSON string to JSON object
                 const databases = JSON.parse(data);
 
-                const checkFeeEntity = databases.filter((data) => {
-                  if (data.FEEENTITY === PaymentEntity.Type) {
-                    return data;
-                  } else {
-                    if (data.FEEENTITY === "ALL") {
+                if (databases.length > 0) {
+                  const checkFeeEntity = databases.filter((data) => {
+                    if (data.FEEENTITY === PaymentEntity.Type) {
                       return data;
-                    } else if (data.ENTITYPROPERTY === "*") {
-                      return data;
+                    } else {
+                      if (data.FEEENTITY === "ALL") {
+                        return data;
+                      } else if (data.ENTITYPROPERTY === "*") {
+                        return data;
+                      }
                     }
+                  });
+                  if (checkFeeEntity.length > 0) {
+                    if (checkFeeEntity[0].FEETYPE.toString() === "PERC") {
+                      const amountPaid = Amount;
+                      const percValue =
+                        parseFloat(checkFeeEntity[0].FEEVALUE) / 100;
+                      const amountCharge =
+                        parseFloat(percValue) * parseFloat(amountPaid);
+                      const finalAmount = amountCharge;
+                      const result = {
+                        AppliedFeeID: checkFeeEntity[0].FEEID,
+                        AppliedFeeValue: parseInt(finalAmount.toFixed(0)),
+                        ChargeAmount: parseFloat(Amount) + finalAmount,
+                        SettlementAmount: Customer.BearsFee
+                          ? Amount + finalAmount
+                          : Amount - finalAmount,
+                        using: "perc",
+                      };
+
+                      res.send({
+                        status: 200,
+                        response: result,
+                      });
+                    } else if (
+                      checkFeeEntity[0].FEETYPE.toString() === "FLAT"
+                    ) {
+                      const amountCharge = checkFeeEntity[0].FEEVALUE;
+                      const finalAmount = amountCharge;
+                      const result = {
+                        AppliedFeeID: checkFeeEntity[0].FEEID,
+                        AppliedFeeValue: amountCharge,
+                        ChargeAmount: Amount + finalAmount,
+                        SettlementAmount: Customer.BearsFee
+                          ? Amount + finalAmount
+                          : Amount - finalAmount,
+                        using: "flat",
+                      };
+
+                      res.send({
+                        status: 200,
+                        response: result,
+                      });
+                    } else if (
+                      checkFeeEntity[0].FEETYPE.toString() === "FLAT_PERC"
+                    ) {
+                      const flatPerc = checkFeeEntity[0].FEEVALUE.split(":");
+                      const flat = parseInt(flatPerc[0]);
+                      const perc = (parseFloat(flatPerc[1]) / 100) * Amount;
+                      const finalChargeFee =
+                        parseFloat(perc) + parseFloat(flat);
+                      const result = {
+                        AppliedFeeID: checkFeeEntity[0].FEEID,
+                        AppliedFeeValue: finalChargeFee.toFixed(0),
+                        ChargeAmount: (
+                          parseFloat(Amount) + finalChargeFee
+                        ).toFixed(0),
+                        SettlementAmount: Customer.BearsFee
+                          ? (parseFloat(Amount) + finalChargeFee).toFixed(0)
+                          : parseFloat(Amount) - finalAmount,
+                      };
+
+                      res.send({
+                        status: 200,
+                        response: result,
+                      });
+                    }
+                  } else {
+                    res.status(404);
+                    res.send({
+                      status: 404,
+                      Error: "No fee configuration for USD transactions.",
+                    });
                   }
-                });
-                console.log("checkfee", checkFeeEntity);
-                if (checkFeeEntity.length > 0) {
-                  if (checkFeeEntity[0].FEETYPE.toString() === "PERC") {
-                    const amountPaid = Amount;
-                    const percValue =
-                      parseFloat(checkFeeEntity[0].FEEVALUE) / 100;
-                    const amountCharge =
-                      parseFloat(percValue) * parseFloat(amountPaid);
-                    const finalAmount = amountCharge;
-                    const result = {
-                      AppliedFeeID: checkFeeEntity[0].FEEID,
-                      AppliedFeeValue: parseInt(finalAmount.toFixed(0)),
-                      ChargeAmount: parseFloat(Amount) + finalAmount,
-                      SettlementAmount: Customer.BearsFee
-                        ? Amount + finalAmount
-                        : Amount - finalAmount,
-                      using: "perc",
-                    };
 
-                    res.send({
-                      status: 200,
-                      response: result,
-                    });
-                  } else if (checkFeeEntity[0].FEETYPE.toString() === "FLAT") {
-                    const amountCharge = checkFeeEntity[0].FEEVALUE;
-                    const finalAmount = amountCharge;
-                    const result = {
-                      AppliedFeeID: checkFeeEntity[0].FEEID,
-                      AppliedFeeValue: amountCharge,
-                      ChargeAmount: Amount + finalAmount,
-                      SettlementAmount: Customer.BearsFee
-                        ? Amount + finalAmount
-                        : Amount - finalAmount,
-                      using: "flat",
-                    };
-
-                    res.send({
-                      status: 200,
-                      response: result,
-                    });
-                  } else if (
-                    checkFeeEntity[0].FEETYPE.toString() === "FLAT_PERC"
-                  ) {
-                    const flatPerc = checkFeeEntity[0].FEEVALUE.split(":");
-                    const flat = parseInt(flatPerc[0]);
-                    const perc = (parseFloat(flatPerc[1]) / 100) * Amount;
-                    const finalChargeFee = parseFloat(perc) + parseFloat(flat);
-                    const result = {
-                      AppliedFeeID: checkFeeEntity[0].FEEID,
-                      AppliedFeeValue: finalChargeFee.toFixed(0),
-                      ChargeAmount: (
-                        parseFloat(Amount) + finalChargeFee
-                      ).toFixed(0),
-                      SettlementAmount: Customer.BearsFee
-                        ? (parseFloat(Amount) + finalChargeFee).toFixed(0)
-                        : parseFloat(Amount) - finalAmount,
-                    };
-
-                    res.send({
-                      status: 200,
-                      response: result,
-                    });
-                  }
+                  res.end();
                 } else {
-                  res.status(404);
+                  res.status(202);
                   res.send({
                     status: 404,
-                    Error: "No fee configuration for USD transactions.",
+                    response: "Please no fee configuration found",
                   });
+                  res.end();
                 }
-
-                res.end();
               }
             });
           } else {
