@@ -52,6 +52,6 @@
     "SettlementAmount": 5000
 ### }
 
-## The api live base url https://bigbimbs-fintech-api-2022.herokuapp.com/
+## The api live base url https://bigbimbs-fintech-api-2022.herokuapp.com
 
 ##
