@@ -142,6 +142,7 @@ router.post("/compute-transaction-fee", (req, res) => {
                         status: 200,
                         response: result,
                       });
+                      res.end();
                     } else if (
                       checkFeeEntity[0].FEETYPE.toString() === "FLAT"
                     ) {
@@ -161,6 +162,7 @@ router.post("/compute-transaction-fee", (req, res) => {
                         status: 200,
                         response: result,
                       });
+                      res.end();
                     } else if (
                       checkFeeEntity[0].FEETYPE.toString() === "FLAT_PERC"
                     ) {
@@ -184,6 +186,7 @@ router.post("/compute-transaction-fee", (req, res) => {
                         status: 200,
                         response: result,
                       });
+                      res.end();
                     }
                   } else {
                     res.status(404);
@@ -195,7 +198,7 @@ router.post("/compute-transaction-fee", (req, res) => {
 
                   res.end();
                 } else {
-                  res.status(202);
+                  res.status(404);
                   res.send({
                     status: 404,
                     response: "Please no fee configuration found",
